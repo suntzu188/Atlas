@@ -1,0 +1,16 @@
+# Atlas
+
+# Environment files
+.env
+.env.*
+
+# Dependencies
+node_modules/
+
+# Build files
+dist/
+build/
+
+# Temporary files
+*.tmp
+*.log
