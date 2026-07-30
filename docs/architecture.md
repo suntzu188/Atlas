@@ -2,28 +2,46 @@
 
 ## Visão Geral
 
-Atlas é estruturado como um Chief of Staff Digital composto por camadas coordenadas:
+Atlas é um Chief of Staff Digital projetado como núcleo executivo de um ecossistema de agentes inteligentes.
 
-CEO → Atlas → Diretores → Especialistas → Ferramentas
+A arquitetura segue:
 
-## Camadas do Sistema
+Usuário (CEO) → Atlas Core → Diretores → Especialistas → Ferramentas
 
-### Núcleo Executivo
-Responsável por planejamento, coordenação, memória e decisões.
+## Componentes Principais
 
-### Diretores
-Módulos responsáveis por áreas específicas do conhecimento e operação.
+### Usuário
+Define objetivos, prioridades, limites e decisões estratégicas.
 
-### Especialistas
-Agentes especializados com uma única responsabilidade principal.
+### Atlas Core
+Camada central responsável por planejamento, memória, coordenação, delegação e revisão.
 
-### Ferramentas
-Sistemas externos utilizados para execução.
+### OpenAI
+Motor de inteligência utilizado para raciocínio, interpretação, geração e interação.
 
-## Princípios Arquiteturais
+### Supabase
+Camada de dados responsável por persistência, memória estruturada e armazenamento operacional.
+
+### Agentes
+Módulos especializados coordenados pelo Atlas Core.
+
+### Ferramentas Externas
+Serviços utilizados para execução, como APIs, GitHub, Vercel, comunicação e automações.
+
+## Fluxo de Comunicação
+
+1. Usuário envia objetivo ao Atlas.
+2. Atlas consulta contexto e memória.
+3. Atlas cria plano de ação.
+4. Atlas delega aos agentes responsáveis.
+5. Agentes utilizam ferramentas autorizadas.
+6. Resultados retornam ao Atlas.
+7. Atlas revisa e registra aprendizado.
+
+## Princípios
 
 - Memória permanente
-- Evolução contínua
 - Separação de responsabilidades
-- Transparência operacional
 - Segurança por autorização
+- Evolução contínua
+- Transparência operacional
