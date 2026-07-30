@@ -1,32 +1,29 @@
-# Roadmap do Atlas
+# Roadmap Oficial do Atlas
 
-## Fase 1 — Fundação
+## Versão 0.1 — Fundação
 
-- Constituição do sistema
-- Estrutura de repositório
-- Documentação base
-- Modelo de memória
+- Constituição
+- Memória
+- Estrutura inicial
 
-## Fase 2 — Arquitetura Cognitiva
+## Versão 0.2 — Primeira Implementação
 
-- Definição dos agentes
-- Sistema de decisões
-- Registro de aprendizados
+- API
+- conexão OpenAI
+- conexão Supabase
+- primeiro chat funcional
 
-## Fase 3 — Integrações
+## Versão 0.3 — Memória Inteligente
 
-- APIs
-- Banco de dados
-- Ferramentas externas
+- memória automática
+- recuperação semântica
+- primeiro agente subordinado
 
-## Fase 4 — Automação
+## Versão 0.4 — Coordenação
 
-- Execução de tarefas
-- Monitoramento
-- Delegação automática
+- delegação entre agentes
+- execução de tarefas
 
-## Fase 5 — Evolução
+## Versão 1.0 — Atlas Operacional
 
-- Novos agentes
-- Otimizações
-- Expansão do ecossistema
+- Atlas operacional como gerente pessoal
