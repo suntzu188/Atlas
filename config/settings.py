@@ -14,10 +14,10 @@ class Settings:
     supabase_key: str = os.getenv("SUPABASE_KEY", "")
     ai_provider: str = os.getenv("AI_PROVIDER", "qwen")
     ai_api_key: str = os.getenv("AI_API_KEY", "")
-    ai_model: str = os.getenv("AI_MODEL", "qwen-plus")
+    ai_model: str = os.getenv("AI_MODEL", "llama-3.3-70b-versatile" if ai_provider == "groq" else "qwen-plus")
     ai_base_url: str = os.getenv(
         "AI_BASE_URL",
-        "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+        "https://api.groq.com/openai/v1/chat/completions" if ai_provider == "groq" else "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
     )
 
     def validate(self):
