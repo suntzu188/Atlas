@@ -4,29 +4,44 @@ from config.settings import Settings
 from database.supabase_client import get_supabase_client
 from gateway.ai_gateway import AIGateway
 from core.orchestrator import AtlasOrchestrator
+from core.runtime_state import AtlasRuntimeState
 from memory.service import MemoryService
 from providers.qwen_provider import QwenProvider
 
 
-def create_atlas():
-    settings = Settings()
-    settings.validate()
+class AtlasRuntime:
+    def __init__(self):
+        self.state = AtlasRuntimeState.degraded()
+        self.atlas = self._initialize()
 
-    supabase = get_supabase_client()
-    memory = MemoryService(storage=supabase)
+    def _initialize(self):
+        try:
+            settings = Settings()
+            settings.validate()
 
-    provider = QwenProvider(
-        api_key=settings.ai_api_key,
-        model=settings.ai_model,
-        base_url=settings.ai_base_url,
-    )
+            supabase = get_supabase_client()
+            memory = MemoryService(storage=supabase)
 
-    gateway = AIGateway(provider=provider)
+            provider = QwenProvider(
+                api_key=settings.ai_api_key,
+                model=settings.ai_model,
+                base_url=settings.ai_base_url,
+            )
 
-    return AtlasOrchestrator(
-        memory_service=memory,
-        ai_gateway=gateway,
-    )
+            gateway = AIGateway(provider=provider)
+            self.state = AtlasRuntimeState.full()
+
+            return AtlasOrchestrator(
+                memory_service=memory,
+                ai_gateway=gateway,
+            )
+        except Exception as error:
+            self.state = AtlasRuntimeState.degraded()
+            return AtlasOrchestrator()
+
+    def get_status(self):
+        return self.state.get_status()
 
 
-atlas = create_atlas()
+runtime = AtlasRuntime()
+atlas = runtime.atlas
