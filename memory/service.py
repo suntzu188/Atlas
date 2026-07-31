@@ -5,15 +5,14 @@ from datetime import datetime
 from memory.embeddings.service import EmbeddingService
 from memory.retrieval.service import RetrievalService
 from memory.consolidation.service import ConsolidationService
+from memory.repository import MemoryRepository
 
 
 class MemoryService:
-    """Coordinates memory storage, retrieval and context preparation."""
-
     def __init__(self, storage=None):
-        self.storage = storage
-        self.embeddings = EmbeddingService(storage)
-        self.retrieval = RetrievalService(storage)
+        self.storage = MemoryRepository(storage) if storage else None
+        self.embeddings = EmbeddingService(self.storage)
+        self.retrieval = RetrievalService(self.storage)
         self.consolidation = ConsolidationService()
 
     def save_memory(self, content, memory_type="episodic", importance="medium"):
@@ -24,7 +23,7 @@ class MemoryService:
             "created_at": datetime.utcnow().isoformat(),
         }
 
-        if self.storage and hasattr(self.storage, "insert_memory"):
+        if self.storage:
             record = self.storage.insert_memory(record)
 
         self.embeddings.generate(record)
