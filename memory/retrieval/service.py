@@ -6,7 +6,7 @@ class RetrievalService:
         self.storage = storage
 
     def search(self, query, limit=5):
-        if self.storage:
+        if self.storage and hasattr(self.storage, "semantic_search"):
             return self.storage.semantic_search(query, limit)
         return []
 
