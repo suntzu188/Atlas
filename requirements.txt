@@ -1,6 +1,7 @@
+# Atlas Core v0.1 runtime dependencies
 fastapi
 uvicorn
 python-dotenv
 supabase
-pytest
 requests
+pytest
