@@ -1,7 +1,9 @@
-"""Minimal Atlas API for chat interaction."""
+"""Atlas API chat endpoint."""
 
 from fastapi import FastAPI
 from pydantic import BaseModel
+
+from core.orchestrator import AtlasOrchestrator
 
 
 app = FastAPI(title="Atlas Core", version="0.1.0")
@@ -15,6 +17,9 @@ class ChatResponse(BaseModel):
     response: str
 
 
+orchestrator = AtlasOrchestrator()
+
+
 @app.get("/")
 def health_check():
     return {"status": "Atlas Core online", "version": "0.1.0"}
@@ -22,5 +27,5 @@ def health_check():
 
 @app.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest):
-    # Integration point for Atlas Core + Memory System + AI Gateway
-    return ChatResponse(response=f"Atlas recebeu: {request.message}")
+    response = orchestrator.process_message(request.message)
+    return ChatResponse(response=response)
