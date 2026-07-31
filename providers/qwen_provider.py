@@ -13,12 +13,20 @@ class QwenProvider:
         if not self.api_key:
             raise RuntimeError("Qwen API key not configured")
 
+        messages = [
+            {"role": "system", "content": instructions or ""},
+        ]
+
+        if context:
+            messages.append(
+                {"role": "assistant", "content": f"Contexto de memória relevante:\n{context}"}
+            )
+
+        messages.append({"role": "user", "content": message})
+
         payload = {
             "model": self.model,
-            "messages": [
-                {"role": "system", "content": instructions or ""},
-                {"role": "user", "content": message},
-            ],
+            "messages": messages,
         }
 
         response = requests.post(
