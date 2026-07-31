@@ -8,6 +8,31 @@ Este repositório contém a arquitetura, documentação, memória e implementaç
 
 Núcleo executável modular com memória persistente, gateway de IA e runtime desacoplado.
 
+## Atlas Runtime State
+
+O Atlas separa o estado do servidor do estado cognitivo do agente.
+
+### ONLINE
+
+Indica que o serviço está disponível e respondendo requisições.
+
+### State
+
+Representa o estado operacional do agente:
+
+- `active` — agente operacional;
+- `idle` — aguardando configuração ou integração;
+- `thinking` — reservado para processamento futuro.
+
+### Mode
+
+Representa a capacidade atual do runtime:
+
+- `full` — integrações disponíveis e Atlas totalmente funcional;
+- `degraded` — servidor online, porém com serviços externos indisponíveis.
+
+O endpoint `/health` consulta o estado atual do runtime através do Atlas Core.
+
 ## Estrutura do projeto
 
 - `api/` — camada FastAPI;
@@ -26,70 +51,34 @@ Criar as seguintes variáveis no provedor cloud:
 ```env
 SUPABASE_URL=
 SUPABASE_KEY=
-
 AI_PROVIDER=qwen
 AI_API_KEY=
 AI_MODEL=qwen-plus
 AI_BASE_URL=
 ```
 
-Use o arquivo `.env.example` como referência.
-
 ### Execução
-
-Instalar dependências:
 
 ```bash
 pip install -r requirements.txt
-```
-
-Executar localmente:
-
-```bash
 uvicorn api.main:app --host 0.0.0.0 --port 8000
 ```
 
-Em ambiente cloud, o comando é definido pelo `Procfile`.
-
 ## Testes da API
-
-### Health check
 
 ```bash
 curl http://localhost:8000/health
 ```
 
-Resposta esperada:
+Resposta:
 
 ```json
 {
   "status": "online",
+  "state": "active",
+  "mode": "full",
   "version": "0.1.0"
 }
-```
-
-### Chat
-
-```bash
-curl -X POST http://localhost:8000/chat \
--H "Content-Type: application/json" \
--d '{"message":"Olá Atlas"}'
-```
-
-## Execução local
-
-```bash
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env
-uvicorn api.main:app
-```
-
-Documentação automática:
-
-```
-http://localhost:8000/docs
 ```
 
 ## Estado atual
@@ -106,4 +95,5 @@ Implementado:
 - Qwen Provider Adapter;
 - Bootstrap Runtime;
 - Supabase Client Adapter;
+- Runtime State Model;
 - API desacoplada do runtime.
