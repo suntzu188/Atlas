@@ -7,10 +7,10 @@ class AtlasOrchestrator:
         self.ai_gateway = ai_gateway
 
     def process_message(self, message):
-        try:
-            context = ""
-            memories = []
+        context = ""
+        memories = []
 
+        try:
             if self.memory:
                 memories = self.memory.retrieve_memories(message)
                 context = self.memory.prepare_context(message)
