@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atlas Chat</title>
+</head>
+<body>
+<h1>Atlas</h1>
+<div id="chat"></div>
+<input id="message" placeholder="Digite sua mensagem">
+<button onclick="sendMessage()">Enviar</button>
+<script>
+async function sendMessage() {
+  const input = document.getElementById('message');
+  const chat = document.getElementById('chat');
+  chat.innerHTML += `<p>Você: ${input.value}</p>`;
+  const response = await fetch('http://localhost:8000/chat', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({message: input.value})
+  });
+  const data = await response.json();
+  chat.innerHTML += `<p>Atlas: ${data.response}</p>`;
+  input.value = '';
+}
+</script>
+</body>
+</html>
