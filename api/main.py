@@ -18,8 +18,16 @@ class ChatResponse(BaseModel):
 
 
 @app.get("/")
-def health_check():
+def root():
     return {"status": "Atlas Core online", "version": "0.1.0"}
+
+
+@app.get("/health")
+def health():
+    return {
+        "status": "online",
+        "version": "0.1.0"
+    }
 
 
 @app.post("/chat", response_model=ChatResponse)
