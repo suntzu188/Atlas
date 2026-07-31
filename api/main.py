@@ -3,7 +3,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from bootstrap import atlas
+from bootstrap import atlas, runtime
 
 
 app = FastAPI(title="Atlas Core", version="0.1.0")
@@ -19,15 +19,12 @@ class ChatResponse(BaseModel):
 
 @app.get("/")
 def root():
-    return {"status": "Atlas Core online", "version": "0.1.0"}
+    return runtime.get_status()
 
 
 @app.get("/health")
 def health():
-    return {
-        "status": "online",
-        "version": "0.1.0"
-    }
+    return runtime.get_status()
 
 
 @app.post("/chat", response_model=ChatResponse)
