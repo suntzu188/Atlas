@@ -1,5 +1,8 @@
-from supabase import create_client, Client
-from config.settings import SUPABASE_URL, SUPABASE_KEY
+"""Supabase client factory for Atlas."""
+
+from supabase import Client, create_client
+
+from config.settings import Settings
 
 
 _client: Client | None = None
@@ -11,11 +14,14 @@ def get_supabase_client() -> Client:
     if _client:
         return _client
 
-    if not SUPABASE_URL or not SUPABASE_KEY:
+    settings = Settings()
+    settings.validate()
+
+    if not settings.supabase_url or not settings.supabase_key:
         raise RuntimeError("Supabase credentials not configured")
 
     try:
-        _client = create_client(SUPABASE_URL, SUPABASE_KEY)
+        _client = create_client(settings.supabase_url, settings.supabase_key)
         return _client
     except Exception as error:
         raise RuntimeError(f"Supabase connection failed: {error}")
