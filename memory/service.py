@@ -23,8 +23,10 @@ class MemoryService:
             "importance": importance,
             "created_at": datetime.utcnow().isoformat(),
         }
-        if self.storage:
+
+        if self.storage and hasattr(self.storage, "insert_memory"):
             record = self.storage.insert_memory(record)
+
         self.embeddings.generate(record)
         return record
 
