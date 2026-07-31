@@ -2,54 +2,88 @@
 
 Sistema Atlas — Chief of Staff Digital.
 
-Este repositório contém a arquitetura, documentação, memória e futuras implementações do ecossistema Atlas.
+Este repositório contém a arquitetura, documentação, memória e implementações do ecossistema Atlas.
 
 ## Atlas Core v0.1
 
-Primeiro esqueleto executável do núcleo do Atlas.
+Núcleo executável modular com memória persistente, gateway de IA e runtime desacoplado.
 
-## Execução local
+## Estrutura do projeto
 
-1. Criar ambiente virtual:
+- `api/` — camada FastAPI;
+- `core/` — componentes centrais do Atlas;
+- `memory/` — sistema de memória;
+- `agents/` — agentes subordinados;
+- `ai_gateway/` — abstração de provedores de IA;
+- `bootstrap.py` — inicialização do runtime.
 
-```bash
-python -m venv venv
+## Deploy cloud
+
+### Variáveis de ambiente
+
+Criar as seguintes variáveis no provedor cloud:
+
+```env
+SUPABASE_URL=
+SUPABASE_KEY=
+
+AI_PROVIDER=qwen
+AI_API_KEY=
+AI_MODEL=qwen-plus
+AI_BASE_URL=
 ```
 
-2. Ativar ambiente:
+Use o arquivo `.env.example` como referência.
 
-Linux/macOS:
+### Execução
 
-```bash
-source venv/bin/activate
-```
-
-Windows:
-
-```bash
-venv\Scripts\activate
-```
-
-3. Instalar dependências:
+Instalar dependências:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Configurar variáveis de ambiente:
-
-Copiar `.env.example` para `.env` e preencher conforme necessário.
-
-5. Iniciar servidor:
+Executar localmente:
 
 ```bash
-python main.py
+uvicorn api.main:app --host 0.0.0.0 --port 8000
 ```
 
-API disponível em:
+Em ambiente cloud, o comando é definido pelo `Procfile`.
 
+## Testes da API
+
+### Health check
+
+```bash
+curl http://localhost:8000/health
 ```
-http://localhost:8000
+
+Resposta esperada:
+
+```json
+{
+  "status": "online",
+  "version": "0.1.0"
+}
+```
+
+### Chat
+
+```bash
+curl -X POST http://localhost:8000/chat \
+-H "Content-Type: application/json" \
+-d '{"message":"Olá Atlas"}'
+```
+
+## Execução local
+
+```bash
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+uvicorn api.main:app
 ```
 
 Documentação automática:
@@ -62,15 +96,14 @@ http://localhost:8000/docs
 
 Implementado:
 
-- estrutura modular;
 - FastAPI;
-- configuração inicial;
-- sistema básico de rotas;
-- dependências.
-
-Ainda não implementado:
-
+- AtlasOrchestrator;
+- MemoryService;
+- Memory Retrieval;
+- Embeddings structure;
+- Consolidation structure;
 - AI Gateway;
-- memória;
-- agentes;
-- automações.
+- Qwen Provider Adapter;
+- Bootstrap Runtime;
+- Supabase Client Adapter;
+- API desacoplada do runtime.
